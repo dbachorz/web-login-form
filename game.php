@@ -20,9 +20,9 @@
     echo "<p>Hello ".$_SESSION['user']."!</p>";
     echo "<p><b>Drewno</b>: ".$_SESSION['drewno'];
     echo " | <b>Kamień</b>: ".$_SESSION['kamien'];
-    echo " | <b>Zboże</b>: ".$_SESSION['zboze']."</p>";
+    echo " | <b>Zboże</b>: ".$_SESSION['zboze'];
 
-    echo "<p><b>E-mail</b>: ".$_SESSION['email'];
+    echo "<br /><br /><b>E-mail</b>: ".$_SESSION['email'];
     echo "<br /><b>Dni premium</b>: ".$_SESSION['dnipremium']."</p>";
 
 ?>

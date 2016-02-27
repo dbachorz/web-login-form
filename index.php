@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    if(isset($_SESSION['logged']) && $_SESSION['logged']){
+        header('Location: game.php');
+        exit();
+    }
+?>
+
 <!DOCTYPE HTML>
 <html lang="pl">
 <head>
@@ -16,6 +24,10 @@
         <input type="password" name="password">
         <input type="submit" value="Sign in!">
     </form>
+
+    <?php
+        if(isset($_SESSION['error'])) echo $_SESSION['error'];
+    ?>
 
 </body>
 </html>
