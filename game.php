@@ -1,7 +1,10 @@
 <?php
 
     session_start();
-
+    if(!isset($_SESSION['logged'])){
+        header('Location: index.php');
+        exit();
+    }
 ?>
 
 <!DOCTYPE HTML>
@@ -17,7 +20,7 @@
 
 <?php
 
-    echo "<p>Hello ".$_SESSION['user']." <a href='logout.php'>[ Logout ]</a>"."!</p>";
+    echo "<p>Hello ".$_SESSION['user']." [ <a href='logout.php'>Logout</a> ]"."!</p>";
     echo "<p><b>Drewno</b>: ".$_SESSION['drewno'];
     echo " | <b>Kamień</b>: ".$_SESSION['kamien'];
     echo " | <b>Zboże</b>: ".$_SESSION['zboze'];
