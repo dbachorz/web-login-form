@@ -18,7 +18,7 @@
         $login = htmlentities($login, ENT_QUOTES, "UTF-8");
         $password = htmlentities($password, ENT_QUOTES, "UTF-8");
 
-        if($query_result = @$connection->query(sprintf("SELECT * FROM game_users WHERE user='%s' AND pass='%s'",
+        if($query_result = @$connection->query(sprintf("SELECT * FROM uzytkownicy WHERE user='%s' AND pass='%s'",
             mysqli_real_escape_string($connection, $login),
             mysqli_real_escape_string($connection, $password)))){
             $usersCount = $query_result->num_rows;
