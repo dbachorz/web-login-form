@@ -17,6 +17,9 @@
 
 <body>
 
+    <a href="register.php">Zarejestruj się!</a>
+    <br/><br/>
+
     <form class="login-form" action="signIn.php" method="post">
         <p>Login:</p>
         <input type="text" name="login">
