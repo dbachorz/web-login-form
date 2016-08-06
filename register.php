@@ -15,6 +15,29 @@
             $_SESSION['e_login'] = 'login has to include alphanumeric symbols';
         }
 
+        $email = $_POST['email'];
+        $safe_email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
+        if ((!filter_var($email, FILTER_VALIDATE_EMAIL)) || ($email != $safe_email)) {
+            $correct_validation = false;
+            $_SESSION['e_email'] = 'type in correct email address';
+        }
+
+        $password = $_POST['password'];
+        $repeat_password = $_POST['repeat_password'];
+
+        if ((strlen($password) < 3) || (strlen($password) > 20)) {
+            $correct_validation = false;
+            $_SESSION['e_password'] = 'password has to have length in between 3 and 20';
+        }
+
+        if ($password !== $repeat_password) {
+            $correct_validation = false;
+            $_SESSION['e_password'] = 'password aren\'t identical';
+        }
+
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
         if (!!$correct_validation) {
             echo "correct validation";
             exit();
@@ -42,11 +65,20 @@
             }
         ?>
         e-mail <br/> <input type="text" name="email" /> <br/>
-
+        <?php
+        if (isset($_SESSION['e_email'])) {
+            echo '<div class="error">'.$_SESSION['e_email'].'</div>';
+            unset($_SESSION['e_email']);
+        }
+        ?>
         Password <br/> <input type="password" name="password" /> <br/>
-
-        Repeat password <br/>   <input type="password" name="repeatPassword" /> <br/><br/>
-
+        <?php
+        if (isset($_SESSION['e_password'])) {
+            echo '<div class="error">'.$_SESSION['e_password'].'</div>';
+            unset($_SESSION['e_password']);
+        }
+        ?>
+        Repeat password <br/> <input type="password" name="repeat_password" /> <br/>
         <label>
             <input type="checkbox" name="termsAndCond" /> I accept the terms and conditions
         </label><br/>
