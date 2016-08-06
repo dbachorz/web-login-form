@@ -1,4 +1,5 @@
 <?php
+    require_once('secrets.php');
     session_start();
 
     if (isset($_POST['email'])) {
@@ -43,8 +44,7 @@
             $_SESSION['e_terms'] = 'You must accept terms and conditions';
         }
 
-        $secret_captcha_key = "6LcG3SYTAAAAALnmcA7zz9NcxzTAlgwCxQ1-03hq";
-        $check_captcha = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$secret_captcha_key."&response=".$_POST['g-recaptcha-response']);
+        $check_captcha = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$RECAPTCHA_SECRET_KEY."&response=".$_POST['g-recaptcha-response']);
         $captcha_response = json_decode($check_captcha);
 
         if (!$captcha_response->success) {
@@ -178,7 +178,7 @@
         }
         ?>
 
-        <div class="g-recaptcha" data-sitekey="6LcG3SYTAAAAAHiO06YjcAhcu0qAVq3XdrTXzdNB"></div>
+        <div class="g-recaptcha" data-sitekey="<?php $RECAPTCHA_SITE_KEY ?>"></div>
         <?php
         if (isset($_SESSION['e_bot'])) {
             echo '<div class="error">'.$_SESSION['e_bot'].'</div>';
