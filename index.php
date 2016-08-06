@@ -20,7 +20,7 @@
     <a href="register.php">Zarejestruj się!</a>
     <br/><br/>
 
-    <form class="login-form" action="signIn.php" method="post">
+    <form class="login-form" action="login.php" method="post">
         <p>Login:</p>
         <input type="text" name="login">
         <p>Password:</p>
@@ -29,8 +29,14 @@
     </form>
 
     <?php
-        if(isset($_SESSION['error'])) echo $_SESSION['error'];
-        if(isset($_SESSION['dev_info_error'])) echo $_SESSION['dev_info_error'];
+        if(isset($_SESSION['error'])) {
+            echo $_SESSION['error'];
+            unset($_SESSION['error']);
+        }
+        if(isset($_SESSION['dev_info_error'])) {
+            echo $_SESSION['dev_info_error'];
+            unset($_SESSION['dev_info_error']);
+        }
     ?>
 
 </body>
