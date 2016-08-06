@@ -52,9 +52,59 @@
             $_SESSION['e_bot'] = 'Prove you\'re human!';
         }
 
-        if (!!$correct_validation) {
-            echo "correct validation";
-            exit();
+        $_SESSION['remembered_login'] = $login;
+        $_SESSION['remembered_email'] = $email;
+        $_SESSION['remembered_pass1'] = $password;
+        $_SESSION['remembered_pass2'] = $repeat_password;
+        if(isset($_POST['terms_and_cond'])) {
+            $_SESSION['remembered_tac'] = true;
+        }
+
+        require_once("connect.php");
+
+        mysqli_report(MYSQLI_REPORT_STRICT);
+        try {
+            $connection = new mysqli($host, $db_user, $db_password, $db_name);
+
+            if ($connection->connect_errno != 0) {
+                throw new Exception(mysqli_connect_errno());
+            } else {
+
+                $result = $connection->query("SELECT id FROM uzytkownicy WHERE email='$email'");
+
+                if(!$result) throw new Exception($connection->error);
+
+                if ($result->num_rows > 0) {
+                    $correct_validation = false;
+                    $_SESSION['e_email'] = 'Email already exists';
+                }
+
+                $result = $connection->query("SELECT id FROM uzytkownicy WHERE user='$login'");
+
+                if(!$result) throw new Exception($connection->error);
+
+                if ($result->num_rows > 0) {
+                    $correct_validation = false;
+                    $_SESSION['e_login'] = 'Login already exists';
+                }
+
+                if ($correct_validation) {
+
+                    if($connection->query("INSERT INTO uzytkownicy VALUES (NULL, '$nick', '$hashed_password', '$email', 100, 100, 100, 14)")){
+                        $_SESSION['successful_register'] = true;
+                        header("Location: welcome.php");
+                    } else {
+                        throw new Exception($connection->error);
+                    }
+
+                    exit();
+                }
+
+                $connection->close();
+            }
+        } catch (Exception $e) {
+            echo '<span class="error">Error connecting to server</span>';
+            echo '<br/>dev info: '.$e;
         }
     }
 ?>
@@ -71,30 +121,55 @@
 
 <body>
     <form method="post">
-        Login <br/> <input type="text" name="login" /> <br/>
+        Login <br/> <input type="text" value="<?php
+            if(isset($_SESSION['remembered_login'])){
+                echo $_SESSION['remembered_login'];
+                unset($_SESSION['remembered_login']);
+            }
+        ?>" name="login" /> <br/>
         <?php
             if (isset($_SESSION['e_login'])) {
                 echo '<div class="error">'.$_SESSION['e_login'].'</div>';
                 unset($_SESSION['e_login']);
             }
         ?>
-        e-mail <br/> <input type="text" name="email" /> <br/>
+        e-mail <br/> <input type="text" value="<?php
+        if(isset($_SESSION['remembered_email'])){
+            echo $_SESSION['remembered_email'];
+            unset($_SESSION['remembered_email']);
+        }
+        ?>" name="email" /> <br/>
         <?php
         if (isset($_SESSION['e_email'])) {
             echo '<div class="error">'.$_SESSION['e_email'].'</div>';
             unset($_SESSION['e_email']);
         }
         ?>
-        Password <br/> <input type="password" name="password" /> <br/>
+        Password <br/> <input type="password" value="<?php
+        if(isset($_SESSION['remembered_pass1'])){
+            echo $_SESSION['remembered_pass1'];
+            unset($_SESSION['remembered_pass1']);
+        }
+        ?>" name="password" /> <br/>
         <?php
         if (isset($_SESSION['e_password'])) {
             echo '<div class="error">'.$_SESSION['e_password'].'</div>';
             unset($_SESSION['e_password']);
         }
         ?>
-        Repeat password <br/> <input type="password" name="repeat_password" /> <br/>
+        Repeat password <br/> <input type="password" value="<?php
+        if(isset($_SESSION['remembered_pass2'])){
+            echo $_SESSION['remembered_pass2'];
+            unset($_SESSION['remembered_pass2']);
+        }
+        ?>" name="repeat_password" /> <br/>
         <label>
-            <input type="checkbox" name="terms_and_cond" /> I accept the terms and conditions
+            <input type="checkbox" value="<?php
+            if(isset($_SESSION['remembered_tac'])){
+                echo $_SESSION['remembered_tac'];
+                unset($_SESSION['remembered_tac']);
+            }
+            ?>" name="terms_and_cond" /> I accept the terms and conditions
         </label><br/>
         <?php
         if (isset($_SESSION['e_terms'])) {
