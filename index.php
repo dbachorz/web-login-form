@@ -30,6 +30,7 @@
 
     <?php
         if(isset($_SESSION['error'])) echo $_SESSION['error'];
+        if(isset($_SESSION['dev_info_error'])) echo $_SESSION['dev_info_error'];
     ?>
 
 </body>
