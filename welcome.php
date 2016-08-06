@@ -6,6 +6,19 @@
     } else {
         unset($_SESSION['successful_register']);
     }
+
+    if (isset($_SESSION['remembered_login'])) unset($_SESSION['remembered_login']);
+    if (isset($_SESSION['remembered_email'])) unset($_SESSION['remembered_email']);
+    if (isset($_SESSION['remembered_pass1'])) unset($_SESSION['remembered_pass1']);
+    if (isset($_SESSION['remembered_pass2'])) unset($_SESSION['remembered_pass2']);
+    if (isset($_SESSION['remembered_tac'])) unset($_SESSION['remembered_tac']);
+
+    if (isset($_SESSION['e_login'])) unset($_SESSION['e_login']);
+    if (isset($_SESSION['e_email'])) unset($_SESSION['e_email']);
+    if (isset($_SESSION['e_password'])) unset($_SESSION['e_password']);
+    if (isset($_SESSION['e_terms'])) unset($_SESSION['e_terms']);
+    if (isset($_SESSION['e_bot'])) unset($_SESSION['e_bot']);
+
 ?>
 
 <!DOCTYPE HTML>

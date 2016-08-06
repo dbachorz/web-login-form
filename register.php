@@ -90,7 +90,7 @@
 
                 if ($correct_validation) {
 
-                    if($connection->query("INSERT INTO uzytkownicy VALUES (NULL, '$nick', '$hashed_password', '$email', 100, 100, 100, 14)")){
+                    if($connection->query("INSERT INTO uzytkownicy VALUES (NULL, '$login', '$hashed_password', '$email', 100, 100, 100, 14)")){
                         $_SESSION['successful_register'] = true;
                         header("Location: welcome.php");
                     } else {
@@ -166,7 +166,7 @@
         <label>
             <input type="checkbox" value="<?php
             if(isset($_SESSION['remembered_tac'])){
-                echo $_SESSION['remembered_tac'];
+                echo checked;
                 unset($_SESSION['remembered_tac']);
             }
             ?>" name="terms_and_cond" /> I accept the terms and conditions
