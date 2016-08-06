@@ -38,6 +38,20 @@
 
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
+        if (!isset($_POST['terms_and_cond'])) {
+            $correct_validation = false;
+            $_SESSION['e_terms'] = 'You must accept terms and conditions';
+        }
+
+        $secret_captcha_key = "6LcG3SYTAAAAALnmcA7zz9NcxzTAlgwCxQ1-03hq";
+        $check_captcha = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$secret_captcha_key."&response=".$_POST['g-recaptcha-response']);
+        $captcha_response = json_decode($check_captcha);
+
+        if (!$captcha_response->success) {
+            $correct_validation = false;
+            $_SESSION['e_bot'] = 'Prove you\'re human!';
+        }
+
         if (!!$correct_validation) {
             echo "correct validation";
             exit();
@@ -52,7 +66,7 @@
     <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"/>
     <link rel="stylesheet" href="app.css">
     <title>logging system- pure PHP</title>
-<!--    <script src='https://www.google.com/recaptcha/api.js'></script>-->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body>
@@ -80,10 +94,22 @@
         ?>
         Repeat password <br/> <input type="password" name="repeat_password" /> <br/>
         <label>
-            <input type="checkbox" name="termsAndCond" /> I accept the terms and conditions
+            <input type="checkbox" name="terms_and_cond" /> I accept the terms and conditions
         </label><br/>
+        <?php
+        if (isset($_SESSION['e_terms'])) {
+            echo '<div class="error">'.$_SESSION['e_terms'].'</div>';
+            unset($_SESSION['e_terms']);
+        }
+        ?>
 
-<!--        <div class="g-recaptcha" data-sitekey="6LcG3SYTAAAAAHiO06YjcAhcu0qAVq3XdrTXzdNB"></div>-->
+        <div class="g-recaptcha" data-sitekey="6LcG3SYTAAAAAHiO06YjcAhcu0qAVq3XdrTXzdNB"></div>
+        <?php
+        if (isset($_SESSION['e_bot'])) {
+            echo '<div class="error">'.$_SESSION['e_bot'].'</div>';
+            unset($_SESSION['e_bot']);
+        }
+        ?>
 
         <br/><input type="submit" value="Register" />
     </form>
