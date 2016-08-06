@@ -10,3 +10,8 @@ p {
 .login-form p {
     display: block;
 }
+
+.error {
+    color: red;
+    margin: 1rem 0 1rem 0;
+}

@@ -1,8 +1,24 @@
 <?php
     session_start();
 
-    if(isset($_POST['email'])) {
+    if (isset($_POST['email'])) {
+        $correct_validation = true;
 
+        $login = $_POST['login'];
+        if ((strlen($login) < 3) || (strlen($login) > 20)) {
+            $correct_validation = false;
+            $_SESSION['e_login'] = 'login has to have length in between 3 and 20';
+        }
+
+        if (!ctype_alnum($login)) {
+            $correct_validation = false;
+            $_SESSION['e_login'] = 'login has to include alphanumeric symbols';
+        }
+
+        if (!!$correct_validation) {
+            echo "correct validation";
+            exit();
+        }
     }
 ?>
 
@@ -13,24 +29,29 @@
     <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge,chrome=1"/>
     <link rel="stylesheet" href="app.css">
     <title>logging system- pure PHP</title>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
+<!--    <script src='https://www.google.com/recaptcha/api.js'></script>-->
 </head>
 
 <body>
     <form method="post">
         Login <br/> <input type="text" name="login" /> <br/>
-
+        <?php
+            if (isset($_SESSION['e_login'])) {
+                echo '<div class="error">'.$_SESSION['e_login'].'</div>';
+                unset($_SESSION['e_login']);
+            }
+        ?>
         e-mail <br/> <input type="text" name="email" /> <br/>
 
         Password <br/> <input type="password" name="password" /> <br/>
 
-        Repeat password <br/> <input type="password" name="repeatPassword" /> <br/><br/>
+        Repeat password <br/>   <input type="password" name="repeatPassword" /> <br/><br/>
 
         <label>
             <input type="checkbox" name="termsAndCond" /> I accept the terms and conditions
         </label><br/>
 
-        <div class="g-recaptcha" data-sitekey="6LcG3SYTAAAAAHiO06YjcAhcu0qAVq3XdrTXzdNB"></div>
+<!--        <div class="g-recaptcha" data-sitekey="6LcG3SYTAAAAAHiO06YjcAhcu0qAVq3XdrTXzdNB"></div>-->
 
         <br/><input type="submit" value="Register" />
     </form>
